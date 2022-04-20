@@ -1,0 +1,23 @@
+.main-title {
+    margin-bottom: 25px;
+
+    color: var(--color-ebony);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 130%;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    &--home {
+        color: var(--color-light);
+    }
+}
+.main-desc {
+    color: var(--color-storm);
+    font-size: 20px;
+    line-height: 150%;
+    &--home{
+        margin-bottom: 60px;
+        color: var(--color-light);
+    }
+}

@@ -1,15 +1,14 @@
-@use 'sass:math';     
+@use "sass:math";
 
 //максимальная ширина контейнера
-$container-max-width: 1570px !default;  
+$container-max-width: 1260px !default;
 
 //кол-во колонок
 $grid-columns: 12 !default;
 
-
 //расстояние между элементами
 $grid-gap: 30px !default;
-$grid-gap-side: math.div($grid-gap, 2);   
+$grid-gap-side: math.div($grid-gap, 2);
 
 //контрольные точки
 $grid-breakpoints: (
@@ -18,8 +17,8 @@ $grid-breakpoints: (
     md: 768px,
     lg: 992px,
     xl: 1240px,
-    xxl: 1340px
-) !default; 
+    xxl: 1340px,
+) !default;
 
 @mixin container {
     margin: 0 auto;
@@ -33,7 +32,7 @@ $grid-breakpoints: (
     margin-left: -#{$grid-gap-side};
     margin-right: -#{$grid-gap-side};
 
-    &> * {
+    & > * {
         margin-left: $grid-gap-side;
         margin-right: $grid-gap-side;
     }
@@ -41,8 +40,8 @@ $grid-breakpoints: (
 
 @mixin col($size) {
     flex: 0 0 auto;
-    width: calc(#{percentage(math.div($size, $grid-columns))} - #{$grid-gap});            
-}      
+    width: calc(#{percentage(math.div($size, $grid-columns))} - #{$grid-gap});
+}
 
 // @mixin media($width) {
 //     @media(min-width: $width) {
@@ -61,17 +60,60 @@ $grid-breakpoints: (
     @include media($width) {
         @content;
     }
-}  
+}
 
 // генерация колонок
 
 // @each $bp, $width in $grid-breakpoints {
 //     @include media($width) {
-//         @for $i from 1 through $grid-columns { 
-//             .col-#{$bp}-#{$i} {    
-//                 @include col($i);        
-//             }  
-//         }  
-//     }  
+//         @for $i from 1 through $grid-columns {
+//             .col-#{$bp}-#{$i} {
+//                 @include col($i);
+//             }
+//         }
+//     }
 // }
 
+@mixin bg-cover {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@mixin flex {
+    display: flex;
+}
+
+@mixin flex-v-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin flex-h-center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin flex-all-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-all-sb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-column-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@mixin flex-column-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
