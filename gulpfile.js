@@ -12,6 +12,7 @@ import removeComments from 'gulp-strip-css-comments';
 import rename from 'gulp-rename';
 import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 import webp from 'gulp-webp';
+import svgSprite from 'gulp-svg-sprite';
 import del from 'del';
 import webpack from 'webpack-stream';
 import browsersync from 'browser-sync';
@@ -30,7 +31,9 @@ let path = {
     php: `${dist}/php/`,
     css: `${dist}/css/`,
     images: `${dist}/img/`,
+    video: `${dist}/video/`,
     webP: `${dist}/img/webp/`,
+    svg: `${dist}/img/svg/`,
     fonts: `${dist}/fonts/`
   },
   src: {
@@ -39,7 +42,9 @@ let path = {
     php: "src/php/*.php",
     css: "src/scss/style.scss",
     images: "src/img/**/*.{jpg,png,svg,gif,ico}",
+    video: `src/video/**/*`,
     webP: "src/img/**/*.{jpg,png}",
+    svg: "src/img/**/*.svg",
     fonts: "src/fonts/*.{woff,woff2}"
   },
   watch: {
@@ -48,7 +53,9 @@ let path = {
     php: "src/php/*.php",
     css: "src/scss/**/*.scss",
     images: "src/img/**/*.{jpg,png,svg,gif,ico}",
+    video: `src/video/**/*`,
     webP: "src/img/**/*.{jpg,png}",
+    svg: "src/img/**/*.svg",
     fonts: "src/fonts/*.{woff,woff2}",
   },
   clean: `dist`
@@ -185,10 +192,27 @@ export const img = () => {
     .pipe(gulp.dest(path.dist.images));
 }
 
+export const video = () => {
+  return gulp.src(path.src.video)
+    .pipe(gulp.dest(path.dist.video))
+}
+
 export const webP = () => {
   return gulp.src(path.src.webP)
     .pipe(webp({ quality: 50 }))
     .pipe(gulp.dest(path.dist.webP));
+}
+
+export const svgSprites = () => {
+  return gulp.src(path.src.svg)
+    .pipe(svgSprite({
+      mode: {
+        stack: {
+          sprite: "../sprite.svg" //sprite file name
+        }
+      },
+    }))
+    .pipe(gulp.dest(path.dist.svg));
 }
 
 export const fonts = () => {
@@ -205,11 +229,13 @@ export const watchFiles = () => {
   gulp.watch([path.watch.js], buildJs);
   gulp.watch([path.watch.php], php);
   gulp.watch([path.watch.images], img);
+  gulp.watch([path.watch.video], video);
   gulp.watch([path.watch.webP], webP);
+  gulp.watch([path.watch.webP], svgSprites);
   gulp.watch([path.watch.fonts], fonts);
 };
 
-const build = gulp.series(clean, gulp.parallel(html, css, buildJs, php, img, webP, fonts));
+const build = gulp.series(clean, gulp.parallel(html, css, buildJs, php, img, video, webP, svgSprites, fonts));
 const watch = gulp.parallel(build, watchFiles, browserSync, browserSyncReload);
 /*
  * Export a default task
